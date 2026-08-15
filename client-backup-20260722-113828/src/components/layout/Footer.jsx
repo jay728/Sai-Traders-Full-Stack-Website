@@ -1,0 +1,16 @@
+import { Link } from "react-router-dom";
+
+function Footer() {
+  return (
+    <footer id="contact" className="border-t border-slate-200 bg-gradient-to-br from-slate-50 to-blue-50 text-slate-600">
+      <div className="mx-auto grid max-w-7xl gap-6 sm:gap-8 px-3 sm:px-4 py-8 sm:py-10 lg:py-14 sm:px-6 md:grid-cols-2 lg:grid-cols-[1.25fr_0.7fr_1fr] lg:px-8">
+        <div><div className="flex items-center gap-1.5 sm:gap-3 group"><span className="flex h-7 w-7 sm:h-9 sm:w-9 lg:h-10 lg:w-10 items-center justify-center rounded-lg sm:rounded-xl bg-gradient-to-br from-blue-600 to-blue-800 font-black text-white text-[10px] sm:text-sm lg:text-base shadow-sm sm:shadow-md group-hover:shadow-md sm:group-hover:shadow-lg group-hover:scale-105 transition-all duration-300">S</span><div><h2 className="text-xs sm:text-base lg:text-base font-extrabold text-slate-900 group-hover:text-blue-600 transition-colors">SAI TRADER</h2><p className="text-[8px] sm:text-[10px] lg:text-xs font-semibold text-slate-500">VACUUM METALLISING SERVICES</p></div></div><p className="mt-3 sm:mt-4 lg:mt-5 max-w-sm text-[10px] sm:text-xs lg:text-sm leading-4 sm:leading-5 lg:leading-7 text-slate-500">Professional vacuum metallising and decorative coating solutions for PP and ABS plastic components. B2B job-work services for manufacturers.</p></div>
+        <div><h3 className="text-[10px] sm:text-xs lg:text-sm font-extrabold uppercase tracking-[0.16em] text-slate-900">Services</h3><div className="mt-3 sm:mt-4 lg:mt-5 flex flex-col gap-2 sm:gap-2.5 lg:gap-3 text-[10px] sm:text-xs lg:text-sm"><Link to="/about" className="hover:text-blue-600 hover:translate-x-1 transition-all duration-300 inline-block py-1">About Us</Link><Link to="/products" className="hover:text-blue-600 hover:translate-x-1 transition-all duration-300 inline-block py-1">Applications & Finishes</Link><Link to="/gallery" className="hover:text-blue-600 hover:translate-x-1 transition-all duration-300 inline-block py-1">Work Gallery</Link><Link to="/contact" className="hover:text-blue-600 hover:translate-x-1 transition-all duration-300 inline-block py-1">Request Quote</Link></div></div>
+        <div><h3 className="text-[10px] sm:text-xs lg:text-sm font-extrabold uppercase tracking-[0.16em] text-slate-900">Contact</h3><div className="mt-3 sm:mt-4 lg:mt-5 space-y-2 sm:space-y-2.5 lg:space-y-3 text-[10px] sm:text-xs lg:text-sm leading-4 sm:leading-5 lg:leading-6"><a href="tel:+919623255747" className="block hover:text-blue-600 hover:translate-x-1 transition-all duration-300 py-1">+91 96232 55747</a><a href="tel:+917972039556" className="block hover:text-blue-600 hover:translate-x-1 transition-all duration-300 py-1">+91 79720 39556</a><a href="mailto:saiitrader24@gmail.com" className="block break-all hover:text-blue-600 hover:translate-x-1 transition-all duration-300 py-1">saiitrader24@gmail.com</a><p className="pt-1 text-slate-500 text-[8px] sm:text-[10px] lg:text-xs leading-3 sm:leading-4 lg:leading-5">Babla Compound, Gaibi Nagar, opposite Sana Hotel, Kalyan Road, Bhiwandi - 421308</p></div></div>
+      </div>
+      <div className="border-t border-slate-200 bg-white px-3 sm:px-4 py-3 sm:py-4 lg:py-5 text-center text-[8px] sm:text-[10px] lg:text-xs text-slate-400">Copyright {new Date().getFullYear()} SAI TRADER. All rights reserved.</div>
+    </footer>
+  );
+}
+
+export default Footer;
