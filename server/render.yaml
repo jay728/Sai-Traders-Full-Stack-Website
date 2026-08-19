@@ -19,3 +19,4 @@ services:
         value: https://plastic-business-management-api.onrender.com
       - key: NODE_ENV
         value: production
+    healthCheckPath: /api/health

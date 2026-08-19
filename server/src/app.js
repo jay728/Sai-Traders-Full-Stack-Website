@@ -13,7 +13,20 @@ const app = express();
 
 app.use(cors({ origin: '*', credentials: true }));
 app.use(express.json());
-app.use('/uploads', express.static('uploads'));
+
+// Serve static files with proper headers for video files
+app.use('/uploads', (req, res, next) => {
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Cross-Origin-Resource-Policy', 'cross-origin');
+  express.static('uploads', {
+    setHeaders: (res, path) => {
+      if (path.endsWith('.mp4') || path.endsWith('.webm') || path.endsWith('.ogg')) {
+        res.setHeader('Content-Type', 'video/mp4');
+        res.setHeader('Accept-Ranges', 'bytes');
+      }
+    }
+  })(req, res, next);
+});
 
 app.get('/', (request, response) => {
   response.status(200).json({
