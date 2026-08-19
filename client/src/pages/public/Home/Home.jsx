@@ -38,6 +38,7 @@ function Home() {
   const [currentProductSlide, setCurrentProductSlide] = useState(0);
   const [heroVideos, setHeroVideos] = useState([]);
   const [videosLoaded, setVideosLoaded] = useState(false);
+  const [videoLoadError, setVideoLoadError] = useState(false);
   const videoRefs = useRef([]);
   const [categories, setCategories] = useState([]);
   const [products, setProducts] = useState([]);
@@ -46,6 +47,7 @@ function Home() {
   const [isLoadingCategories, setIsLoadingCategories] = useState(false);
   const [isLoadingProducts, setIsLoadingProducts] = useState(true);
   const [isLoadingEquipment, setIsLoadingEquipment] = useState(true);
+  const [machineVideoErrors, setMachineVideoErrors] = useState({});
   const [galleryItems, setGalleryItems] = useState([]);
   const [categorySectionRef, isCategorySectionVisible] = useIntersectionObserver();
   const categoryScrollRef1 = useRef(null);
@@ -64,9 +66,21 @@ function Home() {
 
   // Play video when currentHeroImage changes
   useEffect(() => {
+    setVideoLoadError(false);
     if (heroVideoRef.current && heroVideos.length > 0) {
       heroVideoRef.current.currentTime = 0;
-      heroVideoRef.current.play().catch(err => console.log('Video play error:', err));
+      heroVideoRef.current.play().catch(err => {
+        console.log('Video play error:', err);
+        setVideoLoadError(true);
+        // Retry after 2 seconds
+        setTimeout(() => {
+          if (heroVideoRef.current) {
+            heroVideoRef.current.play().catch(retryErr => {
+              console.log('Video retry failed:', retryErr);
+            });
+          }
+        }, 2000);
+      });
     }
   }, [currentHeroImage, heroVideos.length]);
 
@@ -185,11 +199,21 @@ function Home() {
                           muted
                           onEnded={index === currentHeroImage ? handleVideoEnd : undefined}
                           playsInline
+                          onError={() => setVideoLoadError(true)}
+                          onLoadStart={() => setVideoLoadError(false)}
                           className="w-full h-full object-cover"
                         />
                       ) : (
                         <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
                           <span className="text-gray-400">No Video</span>
+                        </div>
+                      )}
+                      {videoLoadError && index === currentHeroImage && (
+                        <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                          <div className="text-center">
+                            <span className="text-gray-400 text-sm mb-2 block">Video loading...</span>
+                            <span className="text-gray-500 text-xs">Backend may be waking up</span>
+                          </div>
                         </div>
                       )}
                       <div className="absolute inset-0 bg-gradient-to-t from-black/60 via-black/20 to-transparent opacity-60" />
@@ -479,12 +503,22 @@ function Home() {
                           loop
                           playsInline
                           controls
+                          onError={() => setMachineVideoErrors(prev => ({ ...prev, [index]: true }))}
+                          onLoadStart={() => setMachineVideoErrors(prev => ({ ...prev, [index]: false }))}
                           className="w-full h-full object-cover"
                         />
                       );
                     })() : (
                       <div className="w-full h-full bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
                         <span className="text-gray-400 text-xs sm:text-sm">No Video</span>
+                      </div>
+                    )}
+                    {machineVideoErrors[index] && (
+                      <div className="absolute inset-0 bg-gradient-to-br from-gray-200 to-gray-300 flex items-center justify-center">
+                        <div className="text-center">
+                          <span className="text-gray-500 text-xs mb-1 block">Loading...</span>
+                          <span className="text-gray-400 text-[10px]">Backend waking up</span>
+                        </div>
                       </div>
                     )}
                     <div className="absolute top-2 right-2 bg-blue-600 text-white text-[8px] sm:text-xs font-extrabold px-2 py-1 rounded-full opacity-0 group-hover:opacity-100 transition-opacity duration-300">
