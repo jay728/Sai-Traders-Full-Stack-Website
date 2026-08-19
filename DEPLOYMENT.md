@@ -57,6 +57,7 @@ mongodb+srv://<username>:<password>@cluster0.xxxxx.mongodb.net/plastic-business-
    - `COMPANY_EMAIL`: Your company email (e.g., saiitrader24@gmail.com)
    - `EMAIL_USER`: Your Gmail address
    - `EMAIL_PASS`: Your Gmail App Password
+   - `API_URL`: Your Render service URL (e.g., `https://plastic-business-management-api.onrender.com`)
    - `NODE_ENV`: `production`
 
 6. Click "Create Web Service"
@@ -193,6 +194,51 @@ Both Render and Vercel support automatic deployments when you push to GitHub:
 vercel --prod
 ```
 
+## ⚠️ Important: Image URL Migration
+
+After deployment, existing images in your database will have relative paths (`/uploads/filename.jpg`) which won't work in production. You have two options:
+
+### Option 1: Re-upload Images (Recommended)
+Simply re-upload your product and gallery images through the admin panel. New uploads will automatically use full URLs.
+
+### Option 2: Update Existing Database Records
+If you have many existing images, you can update them using MongoDB:
+
+```javascript
+// Connect to your MongoDB Atlas database
+// Run this script to update existing image URLs
+
+const updateImageUrls = async () => {
+  const baseUrl = 'https://your-render-api-url.onrender.com';
+  
+  // Update products
+  await Product.updateMany(
+    { images: { $exists: true, $ne: [] } },
+    { $set: { 
+      "images.$[elem]": {
+        $concat: [baseUrl, "$$elem"]
+      }
+    }},
+    { arrayFilters: [{ "elem": { $not: /^http/ } }] }
+  );
+  
+  // Update gallery
+  await Gallery.updateMany(
+    { images: { $exists: true, $ne: [] } },
+    { $set: { 
+      "images.$[elem]": {
+        $concat: [baseUrl, "$$elem"]
+      }
+    }},
+    { arrayFilters: [{ "elem": { $not: /^http/ } }] }
+  );
+  
+  console.log('Image URLs updated successfully');
+};
+```
+
+Replace `https://your-render-api-url.onrender.com` with your actual Render API URL.
+
 ## 📝 Environment Variables Summary
 
 ### Backend (Render)
@@ -201,6 +247,7 @@ vercel --prod
 - `COMPANY_EMAIL`: Company email for password reset
 - `EMAIL_USER`: Gmail address for email service
 - `EMAIL_PASS`: Gmail App Password
+- `API_URL`: Your Render service URL (important for image URLs)
 - `NODE_ENV`: Set to `production`
 
 ### Frontend (Vercel)

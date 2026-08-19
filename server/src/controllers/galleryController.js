@@ -2,7 +2,10 @@ import mongoose from 'mongoose';
 import Gallery from '../models/Gallery.js';
 
 const isValidId = (id) => mongoose.isValidObjectId(id);
-const filePaths = (files) => files?.map((file) => `/uploads/${file.filename}`) || [];
+const filePaths = (files) => {
+  const baseUrl = process.env.API_URL || 'http://localhost:5000';
+  return files?.map((file) => `${baseUrl}/uploads/${file.filename}`) || [];
+};
 
 export const getGalleryItems = async (request, response, next) => {
   try {

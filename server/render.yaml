@@ -15,5 +15,7 @@ services:
         sync: false
       - key: EMAIL_PASS
         sync: false
+      - key: API_URL
+        value: https://plastic-business-management-api.onrender.com
       - key: NODE_ENV
         value: production
