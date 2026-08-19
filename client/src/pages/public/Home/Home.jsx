@@ -119,9 +119,8 @@ function Home() {
     const loadData = async () => {
       try {
         // Pre-warm backend by calling health endpoint
-        const { apiBaseUrl } = await import('../config/api.js');
         try {
-          await fetch(`${apiBaseUrl.replace('/api', '')}/api/health`, { method: 'GET' });
+          await fetch(`${apiOrigin}/api/health`, { method: 'GET' });
         } catch (healthErr) {
           console.log('Backend health check failed, may be waking up:', healthErr.message);
         }
