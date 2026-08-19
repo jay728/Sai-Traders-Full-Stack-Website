@@ -9,5 +9,4 @@ node_modules/
 dist/
 **/dist/
 
-server/uploads/
 client-backup-*/
