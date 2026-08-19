@@ -4,19 +4,13 @@ import tailwindcss from "@tailwindcss/vite";
 
 export default defineConfig({
   plugins: [react(), tailwindcss()],
+
   server: {
-    allowedHosts: ['wok-junkman-snatch.ngrok-free.dev']
+    allowedHosts: ["wok-junkman-snatch.ngrok-free.dev"],
   },
+
   build: {
-    outDir: 'dist',
+    outDir: "dist",
     sourcemap: true,
-    rollupOptions: {
-      output: {
-        manualChunks: {
-          vendor: ['react', 'react-dom', 'react-router-dom'],
-          ui: ['lucide-react']
-        }
-      }
-    }
-  }
+  },
 });
