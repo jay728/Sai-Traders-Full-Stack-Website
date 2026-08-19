@@ -71,18 +71,15 @@ function Home() {
       heroVideoRef.current.currentTime = 0;
       heroVideoRef.current.play().catch(err => {
         console.log('Video play error:', err);
-        // Delay showing error to allow backend to wake up
+        setVideoLoadError(true);
+        // Retry after 2 seconds
         setTimeout(() => {
-          setVideoLoadError(true);
-          // Retry after 3 seconds
-          setTimeout(() => {
-            if (heroVideoRef.current) {
-              heroVideoRef.current.play().catch(retryErr => {
-                console.log('Video retry failed:', retryErr);
-              });
-            }
-          }, 3000);
-        }, 5000);
+          if (heroVideoRef.current) {
+            heroVideoRef.current.play().catch(retryErr => {
+              console.log('Video retry failed:', retryErr);
+            });
+          }
+        }, 2000);
       });
     }
   }, [currentHeroImage, heroVideos.length]);
@@ -118,13 +115,6 @@ function Home() {
   useEffect(() => {
     const loadData = async () => {
       try {
-        // Pre-warm backend by calling health endpoint
-        try {
-          await fetch(`${apiOrigin}/api/health`, { method: 'GET' });
-        } catch (healthErr) {
-          console.log('Backend health check failed, may be waking up:', healthErr.message);
-        }
-
         const [categoriesResponse, productsResponse, galleryResponse] = await Promise.all([
           getCategories({ active: true }),
           getProducts({ active: true }),
@@ -214,18 +204,15 @@ function Home() {
                           className="w-full h-full object-cover"
                         />
                       ) : (
-                        <div className="w-full h-full bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center">
-                          <div className="text-center">
-                            <span className="text-white text-lg font-bold">SAI TRADER</span>
-                            <span className="text-white/80 text-sm block mt-2">Premium Plastic Products</span>
-                          </div>
+                        <div className="w-full h-full bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
+                          <span className="text-gray-400">No Video</span>
                         </div>
                       )}
                       {videoLoadError && index === currentHeroImage && (
-                        <div className="absolute inset-0 bg-gradient-to-br from-blue-600 to-indigo-700 flex items-center justify-center">
+                        <div className="absolute inset-0 bg-gradient-to-br from-gray-800 to-gray-900 flex items-center justify-center">
                           <div className="text-center">
-                            <span className="text-white text-lg font-bold">SAI TRADER</span>
-                            <span className="text-white/80 text-sm block mt-2">Premium Plastic Products</span>
+                            <span className="text-gray-400 text-sm mb-2 block">Video loading...</span>
+                            <span className="text-gray-500 text-xs">Backend may be waking up</span>
                           </div>
                         </div>
                       )}
