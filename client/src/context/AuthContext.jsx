@@ -7,11 +7,24 @@ export function AuthProvider({ children }) {
   const [user, setUser] = useState(() => JSON.parse(localStorage.getItem('adminUser') || 'null'));
 
   const login = async (credentials) => {
-    const response = await loginAdmin(credentials);
-    const { token, user: loggedInUser } = response.data.data;
-    localStorage.setItem('adminToken', token);
-    localStorage.setItem('adminUser', JSON.stringify(loggedInUser));
-    setUser(loggedInUser);
+    let lastError;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      try {
+        const response = await loginAdmin(credentials);
+        const { token, user: loggedInUser } = response.data.data;
+        localStorage.setItem('adminToken', token);
+        localStorage.setItem('adminUser', JSON.stringify(loggedInUser));
+        setUser(loggedInUser);
+        return;
+      } catch (error) {
+        lastError = error;
+        console.log(`Login attempt ${attempt + 1} failed:`, error.message);
+        if (attempt < 2) {
+          await new Promise(resolve => setTimeout(resolve, 2000));
+        }
+      }
+    }
+    throw lastError;
   };
 
   const logout = () => {

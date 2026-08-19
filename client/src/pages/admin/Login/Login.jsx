@@ -8,6 +8,7 @@ function Login() {
   const [password, setPassword] = useState('');
   const [error, setError] = useState('');
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [retryCount, setRetryCount] = useState(0);
   const [showForgotPassword, setShowForgotPassword] = useState(false);
   const [resetStep, setResetStep] = useState('email'); // email, code, reset
   const [resetEmail, setResetEmail] = useState('');
@@ -24,16 +25,19 @@ function Login() {
   const handleSubmit = async (event) => { 
     event.preventDefault(); 
     setError(''); 
+    setRetryCount(0);
     setIsSubmitting(true); 
     try { 
       await login({ email, password }); 
       navigate('/admin'); 
     } catch (requestError) {
       console.error('Login error:', requestError);
-      if (requestError.response) {
+      if (requestError.code === 'ECONNABORTED' || requestError.message.includes('timeout')) {
+        setError('Server is waking up. Please try again in a few seconds.');
+      } else if (requestError.response) {
         setError(requestError.response.data?.message || requestError.response.statusText || 'Unable to log in.');
       } else if (requestError.request) {
-        setError('Server is not responding. Please check if the backend is running.');
+        setError('Server is not responding. The backend may be waking up. Please try again.');
       } else {
         setError('Unable to log in. Please check your connection.');
       }
