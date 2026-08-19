@@ -5,7 +5,7 @@ export const apiOrigin = apiBaseUrl.replace(/\/api$/, '');
 
 const api = axios.create({
   baseURL: apiBaseUrl,
-  timeout: 10000,
+  timeout: 30000,
 });
 
 api.interceptors.request.use((config) => {
