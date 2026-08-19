@@ -8,6 +8,7 @@ import galleryRoutes from './routes/galleryRoutes.js';
 import healthRoutes from './routes/healthRoutes.js';
 import inquiryRoutes from './routes/inquiryRoutes.js';
 import productRoutes from './routes/productRoutes.js';
+import settingsRoutes from './routes/settingsRoutes.js';
 
 const app = express();
 
@@ -41,6 +42,7 @@ app.use('/api/categories', categoryRoutes);
 app.use('/api/products', productRoutes);
 app.use('/api/inquiries', inquiryRoutes);
 app.use('/api/gallery', galleryRoutes);
+app.use('/api/settings', settingsRoutes);
 
 app.use(notFound);
 app.use(errorHandler);
