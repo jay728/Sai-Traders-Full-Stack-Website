@@ -132,7 +132,7 @@ function ProductDetails() {
                   </p>
                   <div className="mt-3 sm:mt-4 flex flex-col sm:flex-row gap-2 sm:gap-3">
                     <a
-                      href={`https://wa.me/918390946157?text=Hi, I'm interested in ${encodeURIComponent(product.name)}. Please provide more details.`}
+                      href={`https://wa.me/917972039556?text=Hi, I'm interested in ${encodeURIComponent(product.name)}. Please provide more details.`}
                       target="_blank"
                       rel="noopener noreferrer"
                       className="inline-flex items-center justify-center gap-2 rounded-xl bg-gradient-to-r from-green-500 to-green-600 px-3 sm:px-4 lg:px-6 py-2 sm:py-2.5 lg:py-3 text-[10px] sm:text-xs lg:text-sm font-extrabold text-white transition-all duration-300 hover:from-green-600 hover:to-green-700 hover:shadow-lg hover:shadow-green-500/30 hover:-translate-y-0.5"

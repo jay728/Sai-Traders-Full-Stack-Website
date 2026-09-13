@@ -183,12 +183,18 @@ function Home() {
                 const videoPath = video.images && video.images.length > 0 ? video.images[0] : null;
                 let fullVideoUrl;
                 if (videoPath?.startsWith('http')) {
-                  fullVideoUrl = videoPath;
+                  // If it's a full URL, replace with local origin if running locally
+                  if (apiOrigin.includes('localhost')) {
+                    fullVideoUrl = videoPath.replace(/https?:\/\/[^\/]+/, apiOrigin);
+                  } else {
+                    fullVideoUrl = videoPath;
+                  }
                 } else if (videoPath?.startsWith('/uploads/')) {
                   fullVideoUrl = `${apiOrigin}${videoPath}`;
                 } else if (videoPath) {
                   fullVideoUrl = `${apiOrigin}/uploads/${videoPath}`;
                 }
+                console.log('Hero video:', index, 'videoPath:', videoPath, 'fullVideoUrl:', fullVideoUrl, 'apiOrigin:', apiOrigin);
                 return (
                   <div key={video._id || index} className={`absolute inset-0 transition-opacity duration-500 ${index === currentHeroImage ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
                     <a className="flex items-center justify-center w-full h-full relative group" href="/products">
@@ -489,12 +495,18 @@ function Home() {
                       const videoPath = video.images[0];
                       let fullVideoUrl;
                       if (videoPath?.startsWith('http')) {
-                        fullVideoUrl = videoPath;
+                        // If it's a full URL, replace with local origin if running locally
+                        if (apiOrigin.includes('localhost')) {
+                          fullVideoUrl = videoPath.replace(/https?:\/\/[^\/]+/, apiOrigin);
+                        } else {
+                          fullVideoUrl = videoPath;
+                        }
                       } else if (videoPath?.startsWith('/uploads/')) {
                         fullVideoUrl = `${apiOrigin}${videoPath}`;
                       } else {
                         fullVideoUrl = `${apiOrigin}/uploads/${videoPath}`;
                       }
+                      console.log('Machine video:', index, 'videoPath:', videoPath, 'fullVideoUrl:', fullVideoUrl, 'apiOrigin:', apiOrigin);
                       return (
                         <video
                           src={fullVideoUrl}
@@ -691,8 +703,8 @@ function Home() {
                   <div className="flex-1 min-w-0">
                     <h3 className="text-xs sm:text-sm lg:text-base font-extrabold text-white mb-0.5 sm:mb-1 group-hover:text-green-400 transition-colors">WhatsApp</h3>
                     <p className="text-[9px] sm:text-xs lg:text-sm text-slate-400 mb-1 sm:mb-2">Instant response • 24/7 available</p>
-                    <a href="https://wa.me/918390946157" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-white font-bold hover:text-green-400 transition-colors group-hover:translate-x-2 transition-transform text-[10px] sm:text-xs lg:text-sm">
-                      +91 83909 46157
+                    <a href="https://wa.me/917972039556" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-2 text-white font-bold hover:text-green-400 transition-colors group-hover:translate-x-2 transition-transform text-[10px] sm:text-xs lg:text-sm">
+                      +91 79720 39556
                       <svg className="w-2 h-2 sm:w-3 sm:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
@@ -804,7 +816,7 @@ function Home() {
                   <span className="relative z-10">Call Now</span>
                 </a>
                 <a
-                  href="https://wa.me/918390946157"
+                  href="https://wa.me/917972039556"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="group relative inline-flex items-center justify-center gap-2 sm:gap-3 w-full rounded-xl sm:rounded-2xl bg-gradient-to-r from-green-500 to-green-600 px-3 sm:px-6 lg:px-8 py-2.5 sm:py-4 lg:py-5 text-[10px] sm:text-sm lg:text-base font-extrabold text-white shadow-2xl shadow-green-500/30 transition-all duration-300 hover:from-green-600 hover:to-green-700 hover:shadow-green-500/50 hover:scale-105 overflow-hidden"
