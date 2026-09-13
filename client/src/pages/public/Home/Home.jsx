@@ -746,8 +746,8 @@ function Home() {
                   <div className="flex-1 min-w-0">
                     <h3 className="text-xs sm:text-sm lg:text-base font-extrabold text-white mb-0.5 sm:mb-1 group-hover:text-purple-400 transition-colors">Email</h3>
                     <p className="text-[9px] sm:text-xs lg:text-sm text-slate-400 mb-1 sm:mb-2">Quick response • Professional</p>
-                    <a href="mailto:saitrader@gmail.com" className="inline-flex items-center gap-2 text-white font-bold hover:text-purple-400 transition-colors group-hover:translate-x-2 transition-transform text-[10px] sm:text-xs lg:text-sm">
-                      saitrader@gmail.com
+                    <a href="mailto:saiitrader24@gmail.com" className="inline-flex items-center gap-2 text-white font-bold hover:text-purple-400 transition-colors group-hover:translate-x-2 transition-transform text-[10px] sm:text-xs lg:text-sm">
+                      saiitrader24@gmail.com
                       <svg className="w-2 h-2 sm:w-3 sm:h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                         <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
                       </svg>
