@@ -280,7 +280,7 @@ function Home() {
                   <Link 
                     key={category._id} 
                     to={`/products#${sectionId}`}
-                    className={`flex-shrink-0 w-[calc(50%-6px)] sm:w-[calc(33.333%-8px)] lg:w-[calc(25%-12px)] aspect-[3/2] group relative bg-gradient-to-br from-white via-white to-gray-50 backdrop-blur-sm rounded-[24px] shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 hover:scale-105 overflow-hidden cursor-pointer border-2 border-gray-200/50 hover:border-blue-500 flex flex-col items-center justify-center p-4 snap-start hover:-translate-y-2 ${isCategorySectionVisible ? 'animate-fade-in-slide-left' : 'opacity-0'}`}
+                    className={`flex-shrink-0 w-[calc(70%-6px)] sm:w-[calc(33.333%-8px)] lg:w-[calc(25%-12px)] aspect-[3/2] group relative bg-gradient-to-br from-white via-white to-gray-50 backdrop-blur-sm rounded-[24px] shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 hover:scale-105 overflow-hidden cursor-pointer border-2 border-gray-200/50 hover:border-blue-500 flex flex-col items-center justify-center p-4 snap-start hover:-translate-y-2 ${isCategorySectionVisible ? 'animate-fade-in-slide-left' : 'opacity-0'}`}
                     style={{ animationDelay: isCategorySectionVisible ? `${index * 150}ms` : '0ms', transformStyle: 'preserve-3d' }}
                   >
                     {showImage && (
