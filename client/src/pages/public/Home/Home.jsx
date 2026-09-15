@@ -266,207 +266,46 @@ function Home() {
         <div className="relative z-10 mx-auto max-w-screen-2xl">
           <div className="mb-6 sm:mb-8 lg:mb-10 text-center">
             <p className="text-[8px] sm:text-xs lg:text-sm font-extrabold uppercase tracking-[0.15em] text-red-600 mb-1.5 sm:mb-3">Browse</p>
-            <h2 className="text-xl sm:text-2xl lg:text-4xl font-extrabold text-gray-900">Shop by Category</h2>
+            <h2 className="text-xl sm:text-2xl lg:text-4xl font-extrabold text-gray-900">Custom Orders</h2>
             <div className="w-16 sm:w-20 lg:w-24 h-1 bg-gradient-to-r from-red-600 to-blue-600 mx-auto mt-2 sm:mt-3 rounded-full" />
           </div>
 
           {!isLoadingCategories && categories.length > 0 ? (
-            <div className="flex flex-col gap-4 lg:gap-6">
-              {/* Mobile: Single scroll with 2x5 grid */}
-              <div ref={categoryScrollRef1} className="flex gap-3 overflow-x-auto pb-8 scrollbar-thin scrollbar-thumb-red-600 scrollbar-track-slate-200 hover:scrollbar-thumb-red-700 snap-x snap-mandatory px-2 lg:hidden" style={{ scrollBehavior: 'smooth' }}>
-                <div className="flex flex-col gap-3">
-                  {/* First row of cards for mobile */}
-                  <div className="flex gap-3">
-                    {categories.slice(0, 5).map((category, index) => {
-                      const sectionId = `section-${category.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-                      const categoryImage = category.image ? (category.image.startsWith('http') ? category.image : `${apiOrigin.replace('/api', '')}${category.image}`) : null;
-                      const showImage = category.image;
-                      return (
-                        <Link 
-                          key={category._id} 
-                          to={`/products#${sectionId}`}
-                          className={`flex-shrink-0 w-[calc(50%-6px)] aspect-[3/2] group relative bg-gradient-to-br from-white via-white to-gray-50 backdrop-blur-sm rounded-[24px] shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 hover:scale-105 overflow-hidden cursor-pointer border-2 border-gray-200/50 hover:border-blue-500 flex flex-col items-center justify-center p-4 snap-start hover:-translate-y-2 ${isCategorySectionVisible ? 'animate-fade-in-slide-left' : 'opacity-0'}`}
-                          style={{ animationDelay: isCategorySectionVisible ? `${index * 150}ms` : '0ms', transformStyle: 'preserve-3d' }}
-                        >
-                          {showImage && (
-                            <div className="flex-1 flex items-center justify-center w-full overflow-hidden relative rounded-xl">
-                              <img 
-                                src={categoryImage} 
-                                alt={category.name} 
-                                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1" 
-                                onError={(e) => { e.target.style.display = 'none'; }}
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            </div>
-                          )}
-                          <div className="w-full flex items-center justify-between mt-2">
-                            <h3 className="text-xs font-bold text-black group-hover:text-blue-700 transition-colors leading-tight">{category.name}</h3>
-                            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
-                              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                              </svg>
-                            </div>
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                  {/* Second row of cards for mobile */}
-                  <div className="flex gap-3">
-                    {categories.slice(5, 10).map((category, index) => {
-                      const sectionId = `section-${category.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-                      const categoryImage = category.image ? (category.image.startsWith('http') ? category.image : `${apiOrigin.replace('/api', '')}${category.image}`) : null;
-                      const showImage = category.image;
-                      return (
-                        <Link 
-                          key={category._id} 
-                          to={`/products#${sectionId}`}
-                          className={`flex-shrink-0 w-[calc(50%-6px)] aspect-[3/2] group relative bg-gradient-to-br from-white via-white to-gray-50 backdrop-blur-sm rounded-[24px] shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 hover:scale-105 overflow-hidden cursor-pointer border-2 border-gray-200/50 hover:border-blue-500 flex flex-col items-center justify-center p-4 snap-start hover:-translate-y-2 ${isCategorySectionVisible ? 'animate-fade-in-slide-left' : 'opacity-0'}`}
-                          style={{ animationDelay: isCategorySectionVisible ? `${(index + 5) * 150}ms` : '0ms', transformStyle: 'preserve-3d' }}
-                        >
-                          {showImage && (
-                            <div className="flex-1 flex items-center justify-center w-full overflow-hidden relative rounded-xl">
-                              <img 
-                                src={categoryImage} 
-                                alt={category.name} 
-                                className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1" 
-                                onError={(e) => { e.target.style.display = 'none'; }}
-                              />
-                              <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                              <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                            </div>
-                          )}
-                          <div className="w-full flex items-center justify-between mt-2">
-                            <h3 className="text-xs font-bold text-black group-hover:text-blue-700 transition-colors leading-tight">{category.name}</h3>
-                            <div className="w-6 h-6 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
-                              <svg className="w-3 h-3 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                              </svg>
-                            </div>
-                          </div>
-                        </Link>
-                      );
-                    })}
-                  </div>
-                </div>
-              </div>
-              
-              {/* Desktop Row 1: 4 cards */}
-              <div className="hidden lg:grid lg:grid-cols-4 lg:overflow-visible lg:gap-5">
-                {categories.slice(0, 4).map((category, index) => {
-                  const sectionId = `section-${category.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-                  const categoryImage = category.image ? (category.image.startsWith('http') ? category.image : `${apiOrigin.replace('/api', '')}${category.image}`) : null;
-                  const showImage = category.image;
-                  return (
-                    <Link 
-                      key={category._id} 
-                      to={`/products#${sectionId}`}
-                      className={`group relative bg-gradient-to-br from-white via-white to-gray-50 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 hover:scale-105 overflow-hidden cursor-pointer h-52 border-2 border-gray-200/50 hover:border-blue-500 flex flex-col items-center justify-center p-4 hover:-translate-y-2 ${isCategorySectionVisible ? 'animate-fade-in-slide-left' : 'opacity-0'}`}
-                      style={{ animationDelay: isCategorySectionVisible ? `${index * 150}ms` : '0ms', transformStyle: 'preserve-3d' }}
-                    >
-                      {showImage && (
-                        <div className="flex-1 flex items-center justify-center w-full overflow-hidden relative rounded-xl">
-                          <img 
-                            src={categoryImage} 
-                            alt={category.name} 
-                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1" 
-                            onError={(e) => { e.target.style.display = 'none'; }}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        </div>
-                      )}
-                      <div className="w-full flex items-center justify-between mt-3">
-                        <h3 className="text-sm font-bold text-black group-hover:text-blue-700 transition-colors">{category.name}</h3>
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
-                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </div>
+            <div ref={categoryScrollRef1} className="flex gap-3 overflow-x-auto pb-8 scrollbar-thin scrollbar-thumb-red-600 scrollbar-track-slate-200 hover:scrollbar-thumb-red-700 snap-x snap-mandatory px-2" style={{ scrollBehavior: 'smooth' }}>
+              {categories.map((category, index) => {
+                const sectionId = `section-${category.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
+                const categoryImage = category.image ? (category.image.startsWith('http') ? category.image : `${apiOrigin.replace('/api', '')}${category.image}`) : null;
+                const showImage = category.image;
+                return (
+                  <Link 
+                    key={category._id} 
+                    to={`/products#${sectionId}`}
+                    className={`flex-shrink-0 w-[calc(50%-6px)] sm:w-[calc(33.333%-8px)] lg:w-[calc(25%-12px)] aspect-[3/2] group relative bg-gradient-to-br from-white via-white to-gray-50 backdrop-blur-sm rounded-[24px] shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 hover:scale-105 overflow-hidden cursor-pointer border-2 border-gray-200/50 hover:border-blue-500 flex flex-col items-center justify-center p-4 snap-start hover:-translate-y-2 ${isCategorySectionVisible ? 'animate-fade-in-slide-left' : 'opacity-0'}`}
+                    style={{ animationDelay: isCategorySectionVisible ? `${index * 150}ms` : '0ms', transformStyle: 'preserve-3d' }}
+                  >
+                    {showImage && (
+                      <div className="flex-1 flex items-center justify-center w-full overflow-hidden relative rounded-xl">
+                        <img 
+                          src={categoryImage} 
+                          alt={category.name} 
+                          className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1" 
+                          onError={(e) => { e.target.style.display = 'none'; }}
+                        />
+                        <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
+                        <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
                       </div>
-                    </Link>
-                  );
-                })}
-              </div>
-              
-              {/* Desktop Row 2: 2 cards centered */}
-              <div className="hidden lg:grid lg:grid-cols-4 lg:overflow-visible lg:gap-5">
-                <div className="hidden lg:block"></div>
-                {categories.slice(4, 6).map((category, index) => {
-                  const sectionId = `section-${category.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-                  const categoryImage = category.image ? (category.image.startsWith('http') ? category.image : `${apiOrigin.replace('/api', '')}${category.image}`) : null;
-                  const showImage = category.image;
-                  return (
-                    <Link 
-                      key={category._id} 
-                      to={`/products#${sectionId}`}
-                      className={`group relative bg-gradient-to-br from-white via-white to-gray-50 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 hover:scale-105 overflow-hidden cursor-pointer h-52 border-2 border-gray-200/50 hover:border-blue-500 flex flex-col items-center justify-center p-4 hover:-translate-y-2 ${isCategorySectionVisible ? 'animate-fade-in-slide-left' : 'opacity-0'}`}
-                      style={{ animationDelay: isCategorySectionVisible ? `${(index + 4) * 150}ms` : '0ms', transformStyle: 'preserve-3d' }}
-                    >
-                      {showImage && (
-                        <div className="flex-1 flex items-center justify-center w-full overflow-hidden relative rounded-xl">
-                          <img 
-                            src={categoryImage} 
-                            alt={category.name} 
-                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1" 
-                            onError={(e) => { e.target.style.display = 'none'; }}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        </div>
-                      )}
-                      <div className="w-full flex items-center justify-between mt-3">
-                        <h3 className="text-sm font-bold text-black group-hover:text-blue-700 transition-colors">{category.name}</h3>
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
-                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </div>
+                    )}
+                    <div className="w-full flex items-center justify-between mt-2">
+                      <h3 className="text-xs sm:text-sm font-bold text-black group-hover:text-blue-700 transition-colors leading-tight">{category.name}</h3>
+                      <div className="w-6 h-6 sm:w-8 sm:h-8 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
+                        <svg className="w-3 h-3 sm:w-4 sm:h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
+                        </svg>
                       </div>
-                    </Link>
-                  );
-                })}
-                <div className="hidden lg:block"></div>
-              </div>
-              
-              {/* Desktop Row 3: 4 cards */}
-              <div className="hidden lg:grid lg:grid-cols-4 lg:overflow-visible lg:gap-5">
-                {categories.slice(6, 10).map((category, index) => {
-                  const sectionId = `section-${category.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-                  const categoryImage = category.image ? (category.image.startsWith('http') ? category.image : `${apiOrigin.replace('/api', '')}${category.image}`) : null;
-                  const showImage = category.image;
-                  return (
-                    <Link 
-                      key={category._id} 
-                      to={`/products#${sectionId}`}
-                      className={`group relative bg-gradient-to-br from-white via-white to-gray-50 backdrop-blur-sm rounded-2xl shadow-xl hover:shadow-2xl hover:shadow-blue-500/20 transition-all duration-500 hover:scale-105 overflow-hidden cursor-pointer h-52 border-2 border-gray-200/50 hover:border-blue-500 flex flex-col items-center justify-center p-4 hover:-translate-y-2 ${isCategorySectionVisible ? 'animate-fade-in-slide-left' : 'opacity-0'}`}
-                      style={{ animationDelay: isCategorySectionVisible ? `${(index + 6) * 150}ms` : '0ms', transformStyle: 'preserve-3d' }}
-                    >
-                      {showImage && (
-                        <div className="flex-1 flex items-center justify-center w-full overflow-hidden relative rounded-xl">
-                          <img 
-                            src={categoryImage} 
-                            alt={category.name} 
-                            className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110 group-hover:rotate-1" 
-                            onError={(e) => { e.target.style.display = 'none'; }}
-                          />
-                          <div className="absolute inset-0 bg-gradient-to-t from-blue-900/40 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                          <div className="absolute inset-0 bg-gradient-to-br from-blue-500/10 to-purple-500/10 opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
-                        </div>
-                      )}
-                      <div className="w-full flex items-center justify-between mt-3">
-                        <h3 className="text-sm font-bold text-black group-hover:text-blue-700 transition-colors">{category.name}</h3>
-                        <div className="w-8 h-8 rounded-full bg-gradient-to-r from-blue-500 to-blue-600 flex items-center justify-center opacity-0 group-hover:opacity-100 transition-all duration-300 group-hover:scale-110">
-                          <svg className="w-4 h-4 text-white" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                            <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 5l7 7-7 7" />
-                          </svg>
-                        </div>
-                      </div>
-                    </Link>
-                  );
-                })}
-              </div>
+                    </div>
+                  </Link>
+                );
+              })}
             </div>
           ) : (
             <div className="text-center text-gray-600 py-4 sm:py-8 lg:py-12 text-[10px] sm:text-xs">Loading categories...</div>
@@ -564,9 +403,9 @@ function Home() {
         <div className="relative z-10 mx-auto max-w-screen-2xl">
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3 sm:gap-8 lg:gap-12">
             {[
-              { number: '500+', label: 'Happy Clients', icon: '👥' },
-              { number: '1000+', label: 'Projects Completed', icon: '✅' },
-              { number: '15+', label: 'Years Experience', icon: '🏆' },
+              { number: '2000+', label: 'Happy Clients', icon: '👥' },
+              { number: '6000+', label: 'Projects Completed', icon: '✅' },
+              { number: '18+', label: 'Years Experience', icon: '🏆' },
               { number: '50+', label: 'Product Categories', icon: '📦' }
             ].map((stat, index) => (
               <div key={index} className={`text-center transition-all duration-1000 ${isStatsSectionVisible ? 'opacity-100 translate-y-0 scale-100' : 'opacity-0 translate-y-10 scale-95'}`} style={{ transitionDelay: `${index * 150}ms` }}>
