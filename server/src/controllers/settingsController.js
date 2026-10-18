@@ -25,8 +25,7 @@ export const updateSettings = async (request, response, next) => {
     if (address !== undefined) settings.address = address;
     
     if (request.file) {
-      const baseUrl = process.env.API_URL || 'http://localhost:5000';
-      settings.logo = `${baseUrl}/uploads/${request.file.filename}`;
+      settings.logo = `/uploads/${request.file.filename}`;
     }
     
     const updatedSettings = await settings.save();
