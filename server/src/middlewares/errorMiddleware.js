@@ -1,8 +1,8 @@
 import multer from 'multer';
-import { MAX_FILE_SIZE_MB } from '../config/upload.js';
+import { MAX_FILE_SIZE_MB, MAX_IMAGE_SIZE_MB } from '../config/upload.js';
 
 const multerMessages = {
-  LIMIT_FILE_SIZE: `File is too large. Maximum size is ${MAX_FILE_SIZE_MB} MB per file.`,
+  LIMIT_FILE_SIZE: `File is too large. Videos can be up to ${MAX_FILE_SIZE_MB} MB and images up to ${MAX_IMAGE_SIZE_MB} MB.`,
   LIMIT_FILE_COUNT: 'Too many files. You can upload up to 6 files at a time.',
   LIMIT_UNEXPECTED_FILE: 'Too many files. You can upload up to 6 files at a time.',
 };

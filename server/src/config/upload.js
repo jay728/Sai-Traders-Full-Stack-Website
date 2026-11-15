@@ -7,12 +7,14 @@ if (!fs.existsSync(uploadsDir)) {
   fs.mkdirSync(uploadsDir, { recursive: true });
 }
 
+// Cloudinary free plan limits: 10 MB per image, 100 MB per video.
 export const MAX_FILE_SIZE_MB = 100;
+export const MAX_IMAGE_SIZE_MB = 10;
 
-const allowedExtensions = new Set([
-  '.jpg', '.jpeg', '.png', '.gif', '.webp',
-  '.mp4', '.webm', '.mov', '.m4v', '.avi',
-]);
+const videoExtensions = new Set(['.mp4', '.webm', '.mov', '.m4v', '.avi']);
+const allowedExtensions = new Set(['.jpg', '.jpeg', '.png', '.gif', '.webp', ...videoExtensions]);
+
+export const isVideo = (file) => file.mimetype.startsWith('video/') || videoExtensions.has(path.extname(file.originalname).toLowerCase());
 
 const storage = multer.diskStorage({
   destination: (request, file, callback) => callback(null, uploadsDir),

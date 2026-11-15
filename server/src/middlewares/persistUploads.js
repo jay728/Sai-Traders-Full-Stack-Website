@@ -1,12 +1,12 @@
 import fs from 'fs/promises';
-import path from 'path';
 import { v2 as cloudinary } from 'cloudinary';
-
-const videoExtensions = new Set(['.mp4', '.webm', '.mov', '.m4v', '.avi']);
+import { isVideo, MAX_IMAGE_SIZE_MB } from '../config/upload.js';
 
 const isCloudinaryConfigured = () => Boolean(process.env.CLOUDINARY_URL);
 
-const isVideo = (file) => file.mimetype.startsWith('video/') || videoExtensions.has(path.extname(file.originalname).toLowerCase());
+const findOversizedImage = (files) => files.find((file) => !isVideo(file) && file.size > MAX_IMAGE_SIZE_MB * 1024 * 1024);
+
+const removeTempFiles = (files) => Promise.all(files.map((file) => fs.unlink(file.path).catch(() => {})));
 
 const uploadToCloudinary = async (file) => {
   const options = { folder: process.env.CLOUDINARY_FOLDER || 'sai-traders' };
@@ -21,6 +21,14 @@ const uploadToCloudinary = async (file) => {
 const persistUploads = async (request, response, next) => {
   const files = request.file ? [request.file] : Object.values(request.files || {}).flat();
   if (files.length === 0) return next();
+
+  const oversizedImage = findOversizedImage(files);
+  if (oversizedImage) {
+    await removeTempFiles(files);
+    const error = new Error(`"${oversizedImage.originalname}" is too large. Images must be ${MAX_IMAGE_SIZE_MB} MB or smaller.`);
+    error.statusCode = 400;
+    return next(error);
+  }
 
   if (!isCloudinaryConfigured()) {
     files.forEach((file) => { file.url = `/uploads/${file.filename}`; });
@@ -37,7 +45,7 @@ const persistUploads = async (request, response, next) => {
     uploadError.statusCode = error.http_code && error.http_code < 500 ? 400 : 502;
     next(uploadError);
   } finally {
-    await Promise.all(files.map((file) => fs.unlink(file.path).catch(() => {})));
+    await removeTempFiles(files);
   }
 };
 
