@@ -5,7 +5,7 @@ import { getProducts } from '../../../services/productService';
 import { getCategories } from '../../../services/categoryService';
 import { useLocation } from 'react-router-dom';
 import useIntersectionObserver from '../../../hooks/useIntersectionObserver';
-import { apiOrigin } from '../../../config/api';
+import { mediaUrl } from '../../../config/api';
 
 
 const finishes = [
@@ -101,7 +101,7 @@ function Products() {
                     <div className="aspect-[4/5] overflow-hidden bg-gradient-to-br from-gray-100 to-gray-200 relative">
                       {product.images && product.images.length > 0 ? (
                         <img 
-                          src={product.images[0].startsWith('http') ? product.images[0] : `${apiOrigin}${product.images[0]}`}
+                          src={mediaUrl(product.images[0])}
                           alt={product.name} 
                           className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-110" 
                           onError={(e) => { e.target.style.display = 'none'; }}

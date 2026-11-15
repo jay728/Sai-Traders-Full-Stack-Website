@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { apiOrigin } from '../../../config/api';
+import { mediaUrl } from '../../../config/api';
 import { createGalleryItem, deleteGalleryItem, getGalleryItems, updateGalleryItem } from '../../../services/galleryService';
 
 const initialForm = { title: '', description: '', type: 'Company Video', isActive: true };
@@ -11,6 +11,7 @@ function GalleryAdmin() {
   const [editingId, setEditingId] = useState(null);
   const [message, setMessage] = useState('');
   const [isLoading, setIsLoading] = useState(true);
+  const [uploadProgress, setUploadProgress] = useState(null);
 
   const loadItems = async () => {
     try {
@@ -46,12 +47,16 @@ function GalleryAdmin() {
       const payload = new FormData();
       Object.entries(form).forEach(([key, value]) => payload.append(key, value));
       files.forEach((file) => payload.append('images', file));
-      const response = editingId ? await updateGalleryItem(editingId, payload) : await createGalleryItem(payload);
-      setMessage(response.data.message);
+      setUploadProgress(0);
+      const config = { onUploadProgress: (event) => setUploadProgress(Math.round((event.loaded * 100) / (event.total || event.loaded || 1))) };
+      const response = editingId ? await updateGalleryItem(editingId, payload, config) : await createGalleryItem(payload, config);
       reset();
+      setMessage(response.data.message);
       await loadItems();
     } catch (error) {
       setMessage(error.response?.data?.message || error.message || 'Unable to save gallery item.');
+    } finally {
+      setUploadProgress(null);
     }
   };
 
@@ -174,9 +179,12 @@ function GalleryAdmin() {
             <div className="flex gap-3 pt-2">
               <button 
                 type="submit"
-                className="flex-1 rounded-xl bg-gradient-to-r from-violet-500 to-violet-600 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-violet-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-violet-500/40 hover:scale-105"
+                disabled={uploadProgress !== null}
+                className="flex-1 rounded-xl bg-gradient-to-r from-violet-500 to-violet-600 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-violet-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-violet-500/40 hover:scale-105 disabled:cursor-wait disabled:opacity-70 disabled:hover:scale-100"
               >
-                {editingId ? '✏️ Update item' : '➕ Upload item'}
+                {uploadProgress !== null
+                  ? (uploadProgress < 100 ? `Uploading... ${uploadProgress}%` : 'Processing...')
+                  : (editingId ? '✏️ Update item' : '➕ Upload item')}
               </button>
               {editingId && (
                 <button 
@@ -235,13 +243,13 @@ function GalleryAdmin() {
                       <div className="aspect-video overflow-hidden bg-gradient-to-br from-slate-100 to-slate-200">
                         {item.images[0]?.toLowerCase().endsWith('.mov') || item.images[0]?.toLowerCase().endsWith('.mp4') || item.images[0]?.toLowerCase().endsWith('.webm') ? (
                           <video 
-                            src={item.images[0].startsWith('http') ? item.images[0] : `${apiOrigin}${item.images[0]}`} 
+                            src={mediaUrl(item.images[0])} 
                             controls 
                             className="w-full h-full object-cover" 
                           />
                         ) : (
                           <img 
-                            src={item.images[0].startsWith('http') ? item.images[0] : `${apiOrigin}${item.images[0]}`} 
+                            src={mediaUrl(item.images[0])} 
                             alt={item.title} 
                             className="h-full w-full object-cover transition-transform duration-300 group-hover:scale-110" 
                           />

@@ -2,7 +2,7 @@ import mongoose from 'mongoose';
 import BestSeller from '../models/BestSeller.js';
 
 const isValidId = (id) => mongoose.isValidObjectId(id);
-const filePath = (file) => file ? `/uploads/${file.filename}` : null;
+const filePath = (file) => file ? file.url : null;
 
 export const getBestSellers = async (request, response, next) => {
   try {

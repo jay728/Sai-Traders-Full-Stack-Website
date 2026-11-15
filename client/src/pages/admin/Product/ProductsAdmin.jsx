@@ -14,6 +14,7 @@ function ProductsAdmin() {
   const [searchTerm, setSearchTerm] = useState('');
   const [filterCategory, setFilterCategory] = useState('all');
   const [filterStatus, setFilterStatus] = useState('all');
+  const [uploadProgress, setUploadProgress] = useState(null);
 
   const loadData = async () => {
     try {
@@ -46,12 +47,16 @@ function ProductsAdmin() {
       const payload = new FormData();
       Object.entries(form).forEach(([key, value]) => payload.append(key, value));
       selectedFiles.forEach((file) => payload.append('images', file));
-      const response = editingId ? await updateProduct(editingId, payload) : await createProduct(payload);
-      setMessage(response.data.message);
+      setUploadProgress(0);
+      const config = { onUploadProgress: (event) => setUploadProgress(Math.round((event.loaded * 100) / (event.total || event.loaded || 1))) };
+      const response = editingId ? await updateProduct(editingId, payload, config) : await createProduct(payload, config);
       reset();
+      setMessage(response.data.message);
       await loadData();
     } catch (error) {
       setMessage(error.response?.data?.message || 'Unable to save product.');
+    } finally {
+      setUploadProgress(null);
     }
   };
 
@@ -247,9 +252,12 @@ function ProductsAdmin() {
             <div className="flex gap-3 pt-2">
               <button 
                 type="submit"
-                className="flex-1 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-orange-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-orange-500/40 hover:scale-105"
+                disabled={uploadProgress !== null}
+                className="flex-1 rounded-xl bg-gradient-to-r from-orange-500 to-orange-600 px-6 py-3 text-sm font-extrabold text-white shadow-lg shadow-orange-500/30 transition-all duration-300 hover:shadow-xl hover:shadow-orange-500/40 hover:scale-105 disabled:cursor-wait disabled:opacity-70 disabled:hover:scale-100"
               >
-                {editingId ? '✏️ Update product' : '➕ Add product'}
+                {uploadProgress !== null
+                  ? (uploadProgress < 100 ? `Uploading... ${uploadProgress}%` : 'Processing...')
+                  : (editingId ? '✏️ Update product' : '➕ Add product')}
               </button>
               {editingId && (
                 <button 

@@ -1,6 +1,6 @@
 import { useEffect, useState, useMemo } from 'react';
 import { Link } from 'react-router-dom';
-import { apiOrigin } from '../../../config/api';
+import { mediaUrl } from '../../../config/api';
 import MainLayout from '../../../layouts/MainLayout';
 import { getGalleryItems } from '../../../services/galleryService';
 import { PrimaryButton, ButtonGroup } from '../../../components/ui/EnhancedButton';
@@ -49,10 +49,10 @@ function Gallery() {
               <div key={`${item._id}-${index}`} className="group flex-shrink-0 relative overflow-hidden rounded-lg sm:rounded-xl lg:rounded-2xl bg-white shadow-md hover:shadow-xl border border-gray-200 hover:border-amber-400 transition-all duration-300 w-64 h-auto sm:w-80 lg:w-96 snap-start">
                 <div className="relative w-full h-64 sm:h-80 lg:h-96 overflow-hidden bg-gray-100">
                   {image.toLowerCase().endsWith('.mov') || image.toLowerCase().endsWith('.mp4') || image.toLowerCase().endsWith('.webm') ? (
-                    <video src={image.startsWith('http') ? image : `${apiOrigin}${image}`} controls autoPlay muted loop playsInline onLoadedData={(e) => e.target.play().catch(err => console.log('Autoplay prevented:', err))} className="w-full h-full object-contain" />
+                    <video src={mediaUrl(image)} controls autoPlay muted loop playsInline onLoadedData={(e) => e.target.play().catch(err => console.log('Autoplay prevented:', err))} className="w-full h-full object-contain" />
                   ) : (
                     <>
-                      <img src={image.startsWith('http') ? image : `${apiOrigin}${image}`} alt={`${item.title} ${index + 1}`} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
+                      <img src={mediaUrl(image)} alt={`${item.title} ${index + 1}`} className="w-full h-full object-cover transition-transform duration-300 group-hover:scale-110" />
                       <div className="absolute inset-0 bg-gradient-to-t from-gray-900/90 via-gray-900/50 to-transparent" />
                     </>
                   )}

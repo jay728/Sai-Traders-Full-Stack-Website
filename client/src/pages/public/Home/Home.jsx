@@ -4,7 +4,7 @@ import MainLayout from '../../../layouts/MainLayout';
 import { getCategories } from '../../../services/categoryService';
 import { getProducts } from '../../../services/productService';
 import { getGalleryItems } from '../../../services/galleryService';
-import { apiOrigin } from '../../../config/api';
+import { mediaUrl } from '../../../config/api';
 
 const useIntersectionObserver = (options = {}) => {
   const [isVisible, setIsVisible] = useState(false);
@@ -181,20 +181,7 @@ function Home() {
             {heroVideos.length > 0 ? (
               heroVideos.map((video, index) => {
                 const videoPath = video.images && video.images.length > 0 ? video.images[0] : null;
-                let fullVideoUrl;
-                if (videoPath?.startsWith('http')) {
-                  // If it's a full URL, replace with local origin if running locally
-                  if (apiOrigin.includes('localhost')) {
-                    fullVideoUrl = videoPath.replace(/https?:\/\/[^\/]+/, apiOrigin);
-                  } else {
-                    fullVideoUrl = videoPath;
-                  }
-                } else if (videoPath?.startsWith('/uploads/')) {
-                  fullVideoUrl = `${apiOrigin}${videoPath}`;
-                } else if (videoPath) {
-                  fullVideoUrl = `${apiOrigin}/uploads/${videoPath}`;
-                }
-                console.log('Hero video:', index, 'videoPath:', videoPath, 'fullVideoUrl:', fullVideoUrl, 'apiOrigin:', apiOrigin);
+                const fullVideoUrl = mediaUrl(videoPath);
                 return (
                   <div key={video._id || index} className={`absolute inset-0 transition-opacity duration-500 ${index === currentHeroImage ? 'opacity-100 z-10' : 'opacity-0 z-0'}`}>
                     <a className="flex items-center justify-center w-full h-full relative group" href="/products">
@@ -274,7 +261,7 @@ function Home() {
             <div ref={categoryScrollRef1} className="flex gap-3 overflow-x-auto pb-8 scrollbar-thin scrollbar-thumb-red-600 scrollbar-track-slate-200 hover:scrollbar-thumb-red-700 snap-x snap-mandatory px-2" style={{ scrollBehavior: 'smooth' }}>
               {categories.map((category, index) => {
                 const sectionId = `section-${category.name.toLowerCase().replace(/[^a-z0-9]+/g, '-')}`;
-                const categoryImage = category.image ? (category.image.startsWith('http') ? category.image : `${apiOrigin.replace('/api', '')}${category.image}`) : null;
+                const categoryImage = category.image ? mediaUrl(category.image) : null;
                 const showImage = category.image;
                 return (
                   <Link 
@@ -332,20 +319,7 @@ function Home() {
                   <div className="relative aspect-[9/14]">
                     {video.images && video.images.length > 0 ? (() => {
                       const videoPath = video.images[0];
-                      let fullVideoUrl;
-                      if (videoPath?.startsWith('http')) {
-                        // If it's a full URL, replace with local origin if running locally
-                        if (apiOrigin.includes('localhost')) {
-                          fullVideoUrl = videoPath.replace(/https?:\/\/[^\/]+/, apiOrigin);
-                        } else {
-                          fullVideoUrl = videoPath;
-                        }
-                      } else if (videoPath?.startsWith('/uploads/')) {
-                        fullVideoUrl = `${apiOrigin}${videoPath}`;
-                      } else {
-                        fullVideoUrl = `${apiOrigin}/uploads/${videoPath}`;
-                      }
-                      console.log('Machine video:', index, 'videoPath:', videoPath, 'fullVideoUrl:', fullVideoUrl, 'apiOrigin:', apiOrigin);
+                      const fullVideoUrl = mediaUrl(videoPath);
                       return (
                         <video
                           src={fullVideoUrl}
