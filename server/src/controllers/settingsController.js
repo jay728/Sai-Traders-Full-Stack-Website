@@ -1,5 +1,4 @@
 import Settings from '../models/Settings.js';
-import upload from '../config/upload.js';
 
 export const getSettings = async (request, response, next) => {
   try {
@@ -25,7 +24,7 @@ export const updateSettings = async (request, response, next) => {
     if (address !== undefined) settings.address = address;
     
     if (request.file) {
-      settings.logo = `/uploads/${request.file.filename}`;
+      settings.logo = request.file.url;
     }
     
     const updatedSettings = await settings.save();

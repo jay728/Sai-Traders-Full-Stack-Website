@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { mediaUrl } from '../../../config/api';
 import { getSettings, updateSettings } from '../../../services/settingsService';
 
 const initialForm = {
@@ -173,7 +174,7 @@ function Settings() {
               {form.logo && !logoFile && (
                 <div className="mt-3">
                   <p className="text-xs font-semibold text-slate-500">Current logo:</p>
-                  <img src={form.logo} alt="Company logo" className="mt-2 h-16 w-auto object-contain rounded-xl border-2 border-slate-200" />
+                  <img src={mediaUrl(form.logo)} alt="Company logo" className="mt-2 h-16 w-auto object-contain rounded-xl border-2 border-slate-200" />
                 </div>
               )}
               {logoFile && (

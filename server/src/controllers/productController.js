@@ -5,7 +5,7 @@ import createSlug from '../utils/slugify.js';
 
 const isValidId = (id) => mongoose.isValidObjectId(id);
 const filePaths = (files) => {
-  return files?.map((file) => `/uploads/${file.filename}`) || [];
+  return files?.map((file) => file.url) || [];
 };
 
 const populateCategory = (query) => query.populate('category', 'name slug');

@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { mediaUrl } from '../../../config/api';
 import { createCategory, deleteCategory, getCategories, updateCategory } from '../../../services/categoryService';
 
 const initialForm = { name: '', description: '', displayOrder: 0, isActive: true, image: '' };
@@ -136,7 +137,7 @@ function Categories() {
               </div>
               {imagePreview && (
                 <div className="mt-3">
-                  <img src={imagePreview} alt="Preview" className="h-32 w-32 object-cover rounded-xl border-2 border-slate-200" />
+                  <img src={mediaUrl(imagePreview)} alt="Preview" className="h-32 w-32 object-cover rounded-xl border-2 border-slate-200" />
                 </div>
               )}
             </label>
@@ -214,7 +215,7 @@ function Categories() {
                   <div className="flex items-center gap-4">
                     <div className="h-12 w-12 rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 flex items-center justify-center text-2xl">
                       {category.image ? (
-                        <img src={category.image} alt={category.name} className="h-full w-full object-cover rounded-xl" />
+                        <img src={mediaUrl(category.image)} alt={category.name} className="h-full w-full object-cover rounded-xl" />
                       ) : (
                         '📁'
                       )}

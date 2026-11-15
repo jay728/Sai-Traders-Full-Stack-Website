@@ -21,7 +21,7 @@ export const getCategories = async (request, response, next) => {
 export const createCategory = async (request, response, next) => {
   try {
     const { name, description, displayOrder, isActive } = request.body;
-    const image = request.file ? `/uploads/${request.file.filename}` : '';
+    const image = request.file ? request.file.url : '';
 
     if (!name?.trim()) {
       return response.status(400).json({
@@ -67,7 +67,7 @@ export const updateCategory = async (request, response, next) => {
     }
 
     const { name, description, displayOrder, isActive } = request.body;
-    const image = request.file ? `/uploads/${request.file.filename}` : undefined;
+    const image = request.file ? request.file.url : undefined;
 
     if (name !== undefined) {
       if (!name.trim()) {

@@ -3,7 +3,7 @@ import Gallery from '../models/Gallery.js';
 
 const isValidId = (id) => mongoose.isValidObjectId(id);
 const filePaths = (files) => {
-  return files?.map((file) => `/uploads/${file.filename}`) || [];
+  return files?.map((file) => file.url) || [];
 };
 
 export const getGalleryItems = async (request, response, next) => {

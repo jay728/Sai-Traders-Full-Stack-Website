@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 import { useParams, Link } from 'react-router-dom';
 import MainLayout from '../../../layouts/MainLayout';
 import { getProductBySlug } from '../../../services/productService';
-import { apiOrigin } from '../../../config/api';
+import { mediaUrl } from '../../../config/api';
 
 function ProductDetails() {
   const { slug } = useParams();
@@ -66,7 +66,7 @@ function ProductDetails() {
               {product.images?.length > 0 ? (
                 <div className="aspect-square overflow-hidden rounded-2xl sm:rounded-3xl bg-white shadow-xl shadow-blue-200/30">
                   <img
-                    src={`${apiOrigin}${product.images[0]}`}
+                    src={mediaUrl(product.images[0])}
                     alt={product.name}
                     className="h-full w-full object-cover"
                   />
@@ -80,7 +80,7 @@ function ProductDetails() {
                   {product.images.slice(1).map((image, index) => (
                     <div key={index} className="aspect-square overflow-hidden rounded-xl sm:rounded-2xl bg-white shadow-lg shadow-blue-200/30">
                       <img
-                        src={`${apiOrigin}${image}`}
+                        src={mediaUrl(image)}
                         alt={`${product.name} ${index + 2}`}
                         className="h-full w-full object-cover"
                       />
